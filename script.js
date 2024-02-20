@@ -1,7 +1,11 @@
 let todoChart;
 let tasks = [];
+let completedTasks = [];
 
 document.addEventListener('DOMContentLoaded', function() {
+      // Load tasks from localStorage on page load
+  tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
   todoChart = new Chart(document.getElementById('todoChart'), {
     type: 'scatter',
     data: {
@@ -44,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   drawQuadrantLines();
+  updateChart();
+  updateTaskList();
 });
 
 function getGridOptions() {
@@ -74,16 +80,24 @@ function addItem() {
   const taskDescription = getValue('taskDescription');
   const dueDate = parseInt(getValue('dueDate'));
   const importance = parseInt(getValue('importance'));
-
+  
   if (isNaN(dueDate) || isNaN(importance) || dueDate < 0 || dueDate > 10 || importance < 0 || importance > 10) {
-    alert('Please enter valid due date (1-10) and importance (1-10) values.');
-    return;
-  }
-
-  tasks.push({ name: taskName, description: taskDescription, x: dueDate, y: importance });
-  updateChart();
-  updateTaskList();
-  clearForm();
+      alert('Please enter valid due date (1-10) and importance (1-10) values.');
+      return;
+    }
+    
+    const newItem = {
+        name: taskName,
+        description: taskDescription,
+        x: dueDate,
+        y: importance
+    };
+    
+    tasks.push(newItem);
+    updateChart();
+    updateTaskList();
+    saveTasks(); // Save tasks to localStorage after adding a new task
+    clearForm()
 }
 
 function updateChart() {
@@ -102,18 +116,28 @@ function updateChart() {
 
 function updateTaskList() {
   const taskList = document.getElementById('taskList');
+  prioritizeTasks(tasks);
   taskList.innerHTML = '';
+
   tasks.forEach((task, index) => {
     const listItem = document.createElement('li');
     listItem.innerHTML = `<span>${task.name}</span><button onclick="completeTask(${index})">Complete</button>`;
     taskList.appendChild(listItem);
   });
+
+  completedTasks.forEach((task) => {
+    listItem = document.createElement('li');
+    listItem.innerHTML = `<span><s>${task[0].name}</s></span>`;
+    taskList.appendChild(listItem);
+  })
+
 }
 
 function completeTask(index) {
-  tasks.splice(index, 1);
+  completedTasks.push(tasks.splice(index, 1));
   updateChart();
   updateTaskList();
+  saveTasks(); // Save tasks to localStorage after completing a task
 }
 
 function clearForm() {
@@ -128,3 +152,13 @@ function setValue(id, value) {
   document.getElementById(id).value = value;
 }
 
+function saveTasks() {
+    // Save tasks array to localStorage
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function prioritizeTasks(tasks) {
+    tasks.sort((a,b) => {
+        return a.x - b.x;
+    })
+}
