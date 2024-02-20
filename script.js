@@ -2,6 +2,9 @@ let todoChart;
 let tasks = [];
 
 document.addEventListener('DOMContentLoaded', function() {
+      // Load tasks from localStorage on page load
+  tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
   todoChart = new Chart(document.getElementById('todoChart'), {
     type: 'scatter',
     data: {
@@ -44,6 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   drawQuadrantLines();
+  updateChart();
+  updateTaskList();
 });
 
 function getGridOptions() {
@@ -80,10 +85,17 @@ function addItem() {
     return;
   }
 
-  tasks.push({ name: taskName, description: taskDescription, x: dueDate, y: importance });
+  const newItem = {
+    name: taskName,
+    description: taskDescription,
+    x: dueDate,
+    y: importance
+  };
+
+  tasks.push(newItem);
   updateChart();
   updateTaskList();
-  clearForm();
+  saveTasks(); // Save tasks to localStorage after adding a new task
 }
 
 function updateChart() {
@@ -114,6 +126,7 @@ function completeTask(index) {
   tasks.splice(index, 1);
   updateChart();
   updateTaskList();
+  saveTasks(); // Save tasks to localStorage after completing a task
 }
 
 function clearForm() {
@@ -128,3 +141,7 @@ function setValue(id, value) {
   document.getElementById(id).value = value;
 }
 
+function saveTasks() {
+    // Save tasks array to localStorage
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
