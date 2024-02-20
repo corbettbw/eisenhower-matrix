@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <h2>New Task</h2>
+      <input type="text" id="taskName" placeholder="Task Name">
+      <textarea id="taskDescription" placeholder="Task Description" rows="5" cols="15"></textarea>
+
+      <div class="slidecontainer">
+      <label for="dueDate">Due Date:</label>
+      <input type="range" list="tickmarks" min="0" max="10" value="15" class="slider" id="dueDate">
+      <datalist id="tickmarks">
+        <option value="0" label="Now"></option>
+        <option value="10" label="Later"></option>
+      </datalist>
+      </div>
+
+      <div class="slidecontainer">
+        <label for="importance">Importance:</label>
+        <input type="range" list="tickmarks" min="0" max="10" value="15" class="slider" id="importance">
+        <datalist id="tickmarks">
+          <option value="0" label="Less"></option>
+          <option value="10" label="More"></option>
+        </datalist>
+        </div>      
+        <button onclick="addItem()">Add Task</button>
+    </div>
+    <div class="chart-container">
+      <canvas id="todoChart"></canvas>
+    </div>
+    <div class="task-list-container">
+      <h2>Tasks</h2>
+      <ul id="taskList"></ul>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
