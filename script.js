@@ -90,7 +90,8 @@ function addItem() {
         name: taskName,
         description: taskDescription,
         x: dueDate,
-        y: importance
+        y: importance,
+        color: getRandomColor()
     };
     
     tasks.push(newItem);
@@ -104,8 +105,8 @@ function updateChart() {
   todoChart.data.datasets = [{
     label: 'Tasks',
     data: tasks.map(task => ({ x: task.x, y: task.y })),
-    pointBackgroundColor: 'blue',
-    pointBorderColor: 'blue',
+    pointBackgroundColor: tasks.map(task => task.color),
+    pointBorderColor: tasks.map(task => task.color),
     pointRadius: 8,
     pointHoverRadius: 10,
     pointHoverBackgroundColor: 'orange',
@@ -121,7 +122,8 @@ function updateTaskList() {
 
   tasks.forEach((task, index) => {
     const listItem = document.createElement('li');
-    listItem.innerHTML = `<span>${task.name}</span><button onclick="completeTask(${index})">Complete</button>`;
+    const colorBullet = `<span style="height: 10px; width: 10px; background-color: ${task.color}; border-radius: 50%; display: inline-block; margin-right: 5px;"></span>`;
+    listItem.innerHTML = `${colorBullet}<span>${task.name}</span><button onclick="completeTask(${index})">Complete</button>`;
     taskList.appendChild(listItem);
   });
 
@@ -161,4 +163,13 @@ function prioritizeTasks(tasks) {
     tasks.sort((a,b) => {
         return a.x - b.x;
     })
+}
+
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }

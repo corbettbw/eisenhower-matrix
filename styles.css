@@ -16,16 +16,69 @@
 }
 
 .task-list-container {
-  width: 15%;
+  width: 25%;
 }
 datalist {
     display: flex;
     justify-content: space-between;
     color: rgb(105, 71, 182);
     width: 120%;
-  }
-  .slider::-webkit-slider-runnable-track {
-    background-color: #ccc;
-  }
+}
 
+.slider::-webkit-slider-runnable-track {
+    background-color: #ccc;
+ }
+
+.task-list-container {
+width: 25%;
+/* Ensure the task list container has some padding */
+padding: 10px;
+}
+
+.task-item {
+display: flex;
+justify-content: space-between; /* This will push the task details and the button to opposite ends */
+align-items: center; /* Aligns items vertically */
+padding: 10px;
+margin-bottom: 10px;
+border-radius: 5px;
+background-color: #f0f0f0; /* Light grey background */
+box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Simple box shadow for depth */
+}
+
+.task-info {
+display: flex;
+align-items: center;
+flex-grow: 1; /* Allows the task info to fill available space, pushing the button to the end */
+}
+
+.color-bullet {
+height: 10px;
+width: 10px;
+border-radius: 50%;
+display: inline-block;
+margin-right: 10px; /* Increased margin for better spacing */
+}
+
+.task-name {
+white-space: nowrap; /* Prevents the text from wrapping */
+overflow: hidden; /* Hide overflow */
+text-overflow: ellipsis; /* Add ellipsis to text overflow */
+max-width: 90%; /* Limit max width to leave space for the button */
+}
+
+.complete-btn {
+padding: 5px 15px; /* Adjust padding to your liking */
+background-color: #4CAF50; /* A green color */
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+.complete-btn:hover {
+background-color: #45a049; /* Slightly darker green on hover */
+}
+  
+  /* Ensure your other styles like .container, .form-container, etc., remain unchanged */
 /* Add additional styling as needed */
